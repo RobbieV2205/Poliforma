@@ -1,10 +1,3 @@
-#
-# Windows PowerShell script for AD DS Deployment
-#
-install-windowsfeature -name AD-Domain-Services -IncludeManagementTools
-Install-WindowsFeature -Name DNS -IncludeManagementTools
-Install-WindowsFeature DHCP -IncludeManagementTools
-Install-WindowsFeature Routing -IncludeManagementTools
 
 Import-Module ADDSDeployment
 Install-ADDSDomainController `
