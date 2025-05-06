@@ -30,7 +30,6 @@ $Parameters1 = @{
 }
 New-SmbShare @Parameters1
 
-
 # voeg een primaire zone toe aan de DNS server
 Add-DnsServerPrimaryZone -NetworkID "192.168.101.0/24" -ReplicationScope "Forest"
 
@@ -53,6 +52,7 @@ New-ADOrganizationalUnit -Name "Automatisering" -Path "OU=PFAfdelingen,DC=polifo
 
 
 # Directie
+New-ADUser -Name "Madelief Smets" -GivenName "Madelief" -Surname "Smets" -SamAccountName "madelief.smets" -UserPrincipalName "madelief.smets@poliforma.local" -Path "OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local" -Description "Adjunct-directeur" -Title "Adjunct-directeur" -AccountPassword (ConvertTo-SecureString "Welkom01!" -AsPlainText -Force) -Enabled $true -ProfilePath "\\pfsv1\UserProfiles\madelief.smets" -HomeDirectory "\\pfsv1\UserFolders\madelief.smets" -HomeDrive "Z"
 New-ADUser -Name "Henk Pell" -GivenName "Henk" -Surname "Pell" -SamAccountName "henk.pell" -UserPrincipalName "henk.pell@poliforma.local" -Path "OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local" -Description "Adjunct Verkoop" -Title "Adjunct-directeur" -AccountPassword (ConvertTo-SecureString "Welkom01!" -AsPlainText -Force) -Enabled $true -ProfilePath "\\pfsv1\UserProfiles\henk.pell" -HomeDirectory "\\pfsv1\UserFolders\henk.pell" -HomeDrive "Z"
 New-ADUser -Name "Teus de Jong" -GivenName "Teus" -Surname "de Jong" -SamAccountName "teus.dejong" -UserPrincipalName "teus.dejong@poliforma.local" -Path "OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local" -Description "Adjunct Administratie" -Title "Adjunct-directeur" -AccountPassword (ConvertTo-SecureString "Welkom01!" -AsPlainText -Force) -Enabled $true -ProfilePath "\\pfsv1\UserProfiles\teus.dejong" -HomeDirectory "\\pfsv1\UserFolders\teus.dejong" -HomeDrive "Z"
 New-ADUser -Name "Dick Brinkman" -GivenName "Dick" -Surname "Brinkman" -SamAccountName "dick.brinkman" -UserPrincipalName "dick.brinkman@poliforma.local" -Path "OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local" -Description "Adjunct Productie" -Title "Adjunct-directeur" -AccountPassword (ConvertTo-SecureString "Welkom01!" -AsPlainText -Force) -Enabled $true -ProfilePath "\\pfsv1\UserProfiles\dick.brinkman" -HomeDirectory "\\pfsv1\UserFolders\dick.brinkman" -HomeDrive "Z"
@@ -90,6 +90,12 @@ foreach ($groep in $groepen) {
 Rename-ADObject -Identity "CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=poliforma,DC=local" -NewName "PFBudel"
 Set-ADObject -Identity "CN=PFBudel,CN=Sites,CN=Configuration,DC=poliforma,DC=local" -Replace @{location="pf budel"}
 New-ADReplicationSubnet -Name "192.168.101.0/24" -Site "PFBudel"
+
+Set-ADOrganizationalUnit -Identity "OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local" -ManagedBy "CN=Madelief Smets,OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local"
+Set-ADOrganizationalUnit -Identity "OU=Staf,OU=PFAfdelingen,DC=poliforma,DC=local" -ManagedBy "CN=Danique Voss,OU=Staf,OU=PFAfdelingen,DC=poliforma,DC=local"
+Set-ADOrganizationalUnit -Identity "OU=Verkoop,OU=PFAfdelingen,DC=poliforma,DC=local" -ManagedBy "CN=Henk Pell,OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local"
+Set-ADOrganizationalUnit -Identity "OU=Productie,OU=PFAfdelingen,DC=poliforma,DC=local" -ManagedBy "CN=Dick Brinkman,OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local"
+Set-ADOrganizationalUnit -Identity "OU=Administratie,OU=PFAfdelingen,DC=poliforma,DC=local" -ManagedBy "CN=Teus de Jong,OU=Directie,OU=PFAfdelingen,DC=poliforma,DC=local"
 
 restart-computer -Force
 
